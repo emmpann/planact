@@ -7,4 +7,12 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+<!--    custom color-->
+    <color name="tosca">#326789</color>
+    <color name="tosca_light">#78A6C8</color>
+    <color name="tosca_white1">#E9EEF2</color>
+    <color name="tosca_white2">#DBE2E7</color>
+    <color name="orange">#E65C4F</color>
+    <color name="gray">#B5B5B5</color>
 </resources>
