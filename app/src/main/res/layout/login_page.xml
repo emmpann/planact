@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/tosca_white1">
 
     <ImageView
         android:id="@+id/imageView3"
@@ -40,9 +41,12 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/email_field"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:theme="@style/EditTextThemeOverlay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:helperText="@string/required"
+        app:helperTextTextColor="@android:color/holo_red_dark"
         android:layout_marginStart="32dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="32dp"
@@ -52,15 +56,23 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:hint="Email" />
+            android:layout_height="match_parent"
+            android:lines="1"
+            android:inputType="textEmailAddress"
+            android:hint="@string/email"/>
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/password_field"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        android:theme="@style/EditTextThemeOverlay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:helperText="@string/required"
+        app:helperTextTextColor="@android:color/holo_red_dark"
+        app:passwordToggleEnabled="true"
+        app:counterEnabled="true"
+        app:counterMaxLength="8"
         android:layout_marginStart="32dp"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="32dp"
@@ -70,12 +82,14 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="36dp"
-            android:hint="Password" />
+            android:layout_height="match_parent"
+            android:inputType="textPassword"
+            android:lines="1"
+            android:hint="@string/password" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/login_button"
         android:layout_width="match_parent"
         android:layout_height="36dp"
         android:layout_marginStart="32dp"
@@ -112,10 +126,10 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/textView5"
+            android:id="@+id/signup_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="SIGN UP?"
+            android:text="SIGN UP"
             android:textColor="@color/orange"
             android:textSize="15sp"
             app:fontFamily="@font/poppins_bold"
