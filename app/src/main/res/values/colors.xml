@@ -15,4 +15,5 @@
     <color name="tosca_white2">#DBE2E7</color>
     <color name="orange">#E65C4F</color>
     <color name="gray">#B5B5B5</color>
+    <color name="transparent">#00000000</color>
 </resources>

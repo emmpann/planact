@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "549826000244",
+    "project_id": "planactdb",
+    "storage_bucket": "planactdb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:549826000244:android:163c87d6b8c06d3f65e821",
+        "android_client_info": {
+          "package_name": "com.efan.planact"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "549826000244-84skeunhhc6rpft12mjp373phlfg7orm.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.efan.planact",
+            "certificate_hash": "bf08494778205926c66152d8a4c74324c4902288"
+          }
+        },
+        {
+          "client_id": "549826000244-uk47m29vdcjllqjn97nrapqojsv4kk2a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAuuB-vZZI6Mr3-24i-urZSoO02WWk93M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "549826000244-uk47m29vdcjllqjn97nrapqojsv4kk2a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
