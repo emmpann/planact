@@ -6,7 +6,7 @@
     app:startDestination="@id/onboardingFragment">
 
     <fragment
-        android:id="@+id/onboardingFragment"
+        android:id="d@+id/onboardingFragment"
         android:name="com.efan.planact.ui.fragments.onboarding.OnboardingFragment"
         android:label="fragment_onboarding"
         tools:layout="@layout/fragment_onboarding" >
@@ -15,7 +15,14 @@
             app:destination="@id/registerFragment" />
         <action
             android:id="@+id/action_onboardingFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/onboardingFragment"
+            app:popUpToInclusive="true"/>
+        <action
+            android:id="@+id/action_onboardingFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/onboardingFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
@@ -24,7 +31,9 @@
         tools:layout="@layout/fragment_register" >
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
@@ -33,24 +42,53 @@
         tools:layout="@layout/fragment_login" >
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
-            app:destination="@id/registerFragment" />
+            app:destination="@id/registerFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="false"/>
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.efan.planact.ui.fragments.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_editTask"
+            app:destination="@id/editTask" />
+        <action
+            android:id="@+id/action_homeFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true"/>
+    </fragment>
     <fragment
         android:id="@+id/createtaskFragment"
         android:name="com.efan.planact.ui.fragments.addTask.CreatetaskFragment"
         android:label="CreatetaskFragment"
-        tools:layout="@layout/fragment_createtask"/>
+        tools:layout="@layout/fragment_createtask">
+        <action
+            android:id="@+id/action_createtaskFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/calendarFragment"
         android:name="com.efan.planact.ui.fragments.calendar.CalendarFragment"
         android:label="CalendarFragment"
         tools:layout="@layout/fragment_calendar"/>
+    <fragment
+        android:id="@+id/editTask"
+        android:name="com.efan.planact.ui.fragments.editTask.EditTaskFragment"
+        android:label="EditTask"
+        tools:layout="@layout/fragment_edit_task">
+        <action
+            android:id="@+id/action_editTask_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <argument
+            android:name="selectedTask"
+            app:argType="com.efan.planact.data.task.Task" />
+    </fragment>
 </navigation>

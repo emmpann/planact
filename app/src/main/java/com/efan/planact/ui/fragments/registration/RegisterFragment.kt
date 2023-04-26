@@ -2,63 +2,59 @@ package com.efan.planact.ui.fragments.registration
 
 import android.os.Bundle
 import android.util.Patterns
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.efan.planact.R
-import com.efan.planact.data.user.User
-import com.efan.planact.data.user.UserViewModel
 import com.efan.planact.databinding.FragmentRegisterBinding
+import com.efan.planact.ui.fragments.login.UserViewModel
+import com.efan.planact.util.StateListener
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_register.view.*
 
-class RegisterFragment : Fragment() {
+@AndroidEntryPoint
+class RegisterFragment : Fragment(), StateListener {
 
     private lateinit var binding: FragmentRegisterBinding
 
-    private lateinit var mUserViewModel: UserViewModel
+    private val viewModel by viewModels<UserViewModel>()
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity).window.statusBarColor =
+            ContextCompat.getColor(requireContext(), R.color.tosca_white1)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentRegisterBinding.inflate(inflater, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_register, container, false)
+        binding.viewModel = viewModel
+        viewModel.stateListener = this
         val view = binding.root
 
-        toLoginFragment(view)
         emailFocusListener()
         usernameFocusListener()
         passwordFocusListener()
         confirmPasswordFocusListener()
-        registerButton()
+        toSignInFragment()
 
         return view
     }
 
-    private fun registerButton() {
-        binding.registerButton.setOnClickListener {
-            if (inputCheck()) {
-                insertDataToDatabase()
-                Toast.makeText(requireContext(), "Successfully register", Toast.LENGTH_SHORT).show()
-            }
+    private fun toSignInFragment() {
+        binding.signinButton.setOnClickListener {
+            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
         }
-    }
-
-    private fun insertDataToDatabase() {
-        val email = binding.emailField.text.toString()
-        val username = binding.usernameField.text.toString()
-        val password = binding.passwordField.text.toString()
-
-        mUserViewModel = ViewModelProvider(this)[UserViewModel::class.java]
-
-        val user = User(0, email, username, password)
-
-        mUserViewModel.addUser(user)
-
     }
 
     private fun inputCheck(): Boolean {
@@ -185,5 +181,21 @@ class RegisterFragment : Fragment() {
             return "Password doesn't match"
         }
         return null
+    }
+
+    override fun onLoading() {
+    }
+
+    override fun onSuccess(message: String?) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+        findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+    }
+
+    override fun onSuccess(message: String?, id: Int) {
+    }
+
+    override fun onError(message: String) {
+        inputCheck()
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }

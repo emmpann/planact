@@ -1,12 +1,19 @@
 package com.efan.planact.data.task
 
-import androidx.lifecycle.LiveData
+import com.efan.planact.data.AppDatabase
+import javax.inject.Inject
 
-class TaskRepository(private val taskDao: TaskDao) {
+class TaskRepository @Inject constructor(private val appDatabase: AppDatabase) {
 
-    val readAllData: LiveData<List<Task>> = taskDao.readAllData()
+    fun getTasks(userId: Int) = appDatabase.taskDao().getTasks(userId) // userId, name, dueDate
 
-    suspend fun addTask(task: Task) {
-        taskDao.addTask(task)
-    }
+    fun searchTasks(userId: Int, searchQuery: String) = appDatabase.taskDao().searchTask(userId, searchQuery)
+
+    fun getTasksByDate(userId: Int, dueDate: String) = appDatabase.taskDao().getTasksByDate(userId, dueDate)
+
+    suspend fun addTask(task: Task) = appDatabase.taskDao().addTask(task)
+
+    suspend fun updateTask(task: Task) = appDatabase.taskDao().update(task)
+
+    suspend fun deleteTask(task: Task) = appDatabase.taskDao().delete(task)
 }

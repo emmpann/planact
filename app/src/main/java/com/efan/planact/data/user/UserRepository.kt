@@ -1,12 +1,17 @@
 package com.efan.planact.data.user
 
 import androidx.lifecycle.LiveData
+import com.efan.planact.data.AppDatabase
+import javax.inject.Inject
 
-class UserRepository(private val userDao: UserDao) {
+class UserRepository @Inject constructor(
+    private val appDatabase: AppDatabase
+    ) {
 
-    val readAllData: LiveData<List<User>> = userDao.readAllData()
+    val readAllData: LiveData<List<User>> = appDatabase.userDao().readAllData()
 
-    suspend fun addUser(user: User) {
-        userDao.addUser(user)
-    }
+
+    fun loginUser(email: String, password: String) = appDatabase.userDao().loginUser(email, password)
+
+    suspend fun addUser(user: User) = appDatabase.userDao().addUser(user)
 }

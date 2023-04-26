@@ -1,55 +1,67 @@
 package com.efan.planact.ui.fragments.login
 
-import android.content.Intent
+import android.app.Activity
 import android.os.Bundle
 import android.util.Patterns
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.efan.planact.R
 import com.efan.planact.databinding.FragmentLoginBinding
-import com.efan.planact.ui.activity.MainActivity
+import com.efan.planact.util.PreferencesManager
+import com.efan.planact.util.StateListener
+import dagger.hilt.android.AndroidEntryPoint
 
-class LoginFragment : Fragment() {
+@AndroidEntryPoint
+class LoginFragment : Fragment(), StateListener {
 
     private lateinit var binding: FragmentLoginBinding
+
+    private val viewModel by viewModels<UserViewModel>()
+
+    lateinit var preferencesManager: PreferencesManager
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (activity as AppCompatActivity).window.statusBarColor =
+            ContextCompat.getColor(requireContext(), R.color.tosca)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        binding = FragmentLoginBinding.inflate(inflater, container, false)
-        val view = binding.root
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false)
+        binding.viewModel = viewModel
+        viewModel.stateListener = this
+
+        preferencesManager = PreferencesManager(requireContext()) // login and log out setup
 
         emailFocusListener()
         passwordFocusListener()
         toSignUpFragment()
-        loginButton()
 
-        return view
+        return binding.root
+    }
+
+    private fun hideKeyboard(view: View) {
+        val inputMethodManager = context?.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
     }
 
     private fun toSignUpFragment() {
         binding.signupButton.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
-    }
-
-    private fun loginButton() {
-        binding.loginButton.setOnClickListener {
-            if (inputCheck()) {
-                if (isUserExist()) {
-                    findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-                }
-            }
-        }
-    }
-
-    private fun isUserExist(): Boolean {
-        return true
     }
 
     private fun inputCheck(): Boolean {
@@ -93,9 +105,10 @@ class LoginFragment : Fragment() {
     }
 
     private fun passwordFocusListener() {
-        binding.passwordField.setOnFocusChangeListener { _, focused ->
+        binding.passwordField.setOnFocusChangeListener { view, focused ->
             if (!focused) {
                 binding.passwordFieldLayout.helperText = validPassword()
+                hideKeyboard(view)
             }
         }
     }
@@ -124,9 +137,24 @@ class LoginFragment : Fragment() {
         return null
     }
 
-//    override fun onGetLayoutInflater(savedInstanceState: Bundle?): LayoutInflater {
-//        val inflater = super.onGetLayoutInflater(savedInstanceState)
-//        val contextThemeWrapper: Context = ContextThemeWrapper(requireContext(), R.style.LoginTheme)
-//        return inflater.cloneInContext(contextThemeWrapper)
-//    }
+    override fun onLoading() {
+    }
+
+    override fun onSuccess(message: String?) {
+    }
+
+    override fun onSuccess(message: String?, id: Int) {
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+
+        // set session
+        preferencesManager.setLogin(true)
+        preferencesManager.setId(id)
+
+        findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+    }
+
+    override fun onError(message: String) {
+        inputCheck()
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
 }

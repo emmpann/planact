@@ -3,7 +3,7 @@
     <style name="Theme.Planact" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/orange</item>
-        <item name="colorPrimaryVariant">@color/tosca_light</item>
+        <item name="colorPrimaryVariant">@color/tosca</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/tosca</item>

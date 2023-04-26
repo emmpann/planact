@@ -1,29 +1,51 @@
 package com.efan.planact.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import androidx.fragment.app.Fragment
-import androidx.navigation.findNavController
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
-import com.efan.planact.ui.fragments.addTask.CreatetaskFragment
-import com.efan.planact.ui.fragments.calendar.CalendarFragment
-import com.efan.planact.ui.fragments.home.HomeFragment
 import com.efan.planact.R
 import com.efan.planact.databinding.ActivityMainBinding
+import com.efan.planact.util.PreferencesManager
+import com.efan.planact.util.SharedPreferences
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityMainBinding
 
+    private lateinit var preferencesManager: PreferencesManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        preferencesManager = PreferencesManager(this)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val navHost = supportFragmentManager.findFragmentById(R.id.fragment_container)!!
+        val navController = navHost.findNavController()
         val bottomNavigationView = binding.bottomNavigation
-        val navController = findNavController(R.id.fragment_container)
+
+//        Handler().postDelayed({
+//            if(preferencesManager.isLogin()) {
+//                SharedPreferences.saveUserId(preferencesManager.getId())
+//                navController.navigate(R.id.action_onboardingFragment_to_homeFragment)
+//            } else {
+//                navController.navigate(R.id.action_onboardingFragment_to_loginFragment)
+//            }
+//        }, 2000)
+
+        if(preferencesManager.isLogin()) {
+            SharedPreferences.saveUserId(preferencesManager.getId())
+            navController.navigate(R.id.action_onboardingFragment_to_homeFragment)
+        } else {
+            navController.navigate(R.id.action_onboardingFragment_to_loginFragment)
+        }
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
@@ -41,13 +63,7 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
-
         bottomNavigationView.setupWithNavController(navController)
-    }
 
-    private fun loadFragment(fragment: Fragment) {
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.fragment_container, fragment)
-        transaction.commit()
     }
 }
