@@ -8,5 +8,3 @@ todolist android apps project using kotlin
 3. view todo list by date
 4. search todo
 5. register, login & logout
-
-# User Interface
